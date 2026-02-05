@@ -41,13 +41,32 @@ main {
   }
 }
 
-section {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
+}
+
+/* Hide bullet points and style participant list */
+.participants-list {
+  list-style: none;
+  padding-left: 0;
+}
+.participant-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.delete-participant {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c00;
+  font-size: 1.2em;
+}
 }
 
 section h3 {
