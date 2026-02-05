@@ -20,7 +20,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
 # In-memory activity database
-
+# Activities organized by category
 activities = {
     "Basketball": {
         "description": "Indoor basketball league and skill development",
@@ -99,9 +99,14 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specific activity
     activity = activities[activity_name]
 
-    # Add student
     # Validate student is not already signed up
     if email in activity["participants"]:
         raise HTTPException(status_code=400, detail="Student already signed up for this activity")
+
+    # Validate activity is not at max capacity
+    if len(activity["participants"]) >= activity["max_participants"]:
+        raise HTTPException(status_code=400, detail="Activity is at maximum capacity")
+
+    # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
