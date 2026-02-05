@@ -41,13 +41,32 @@ main {
   }
 }
 
-section {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
+}
+
+/* Hide bullet points and style participant list */
+.participants-list {
+  list-style: none;
+  padding-left: 0;
+}
+.participant-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.delete-participant {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c00;
+  font-size: 1.2em;
+}
 }
 
 section h3 {
@@ -141,4 +160,34 @@ footer {
   margin-top: 30px;
   padding: 20px;
   color: #666;
+}
+
+.participants-section {
+  margin-top: 12px;
+  padding: 10px;
+  background-color: #eef3fb;
+  border-radius: 4px;
+  border: 1px solid #c5cae9;
+}
+
+.participants-section strong {
+  color: #3949ab;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.participants-list {
+  list-style-type: disc;
+  margin-left: 20px;
+  color: #333;
+  font-size: 15px;
+}
+
+.no-participants {
+  color: #888;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  text-align: center;
+  padding: 8px;
+  font-style: italic;
 }

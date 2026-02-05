@@ -20,7 +20,44 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
 # In-memory activity database
+# Activities organized by category
 activities = {
+    "Basketball": {
+        "description": "Indoor basketball league and skill development",
+        "schedule": "Mondays and Wednesdays, 4:00 PM - 5:30 PM",
+        "max_participants": 16,
+        "participants": ["alex@mergington.edu"]
+        },
+        "Soccer": {
+        "description": "Competitive soccer team and friendly matches",
+        "schedule": "Tuesdays and Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": ["james@mergington.edu", "isabella@mergington.edu"]
+        },
+        "Debate Club": {
+        "description": "Improve public speaking and argumentation skills",
+        "schedule": "Wednesdays, 3:30 PM - 4:30 PM",
+        "max_participants": 15,
+        "participants": ["lucas@mergington.edu"]
+        },
+        "Robotics Club": {
+        "description": "Design, build, and program robots for competitions",
+        "schedule": "Saturdays, 10:00 AM - 12:00 PM",
+        "max_participants": 12,
+        "participants": ["ava@mergington.edu", "noah@mergington.edu"]
+        },
+        "Drama Club": {
+        "description": "Stage performances, acting, and theatrical productions",
+        "schedule": "Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": ["mia@mergington.edu"]
+        },
+        "Art Studio": {
+        "description": "Painting, sketching, and visual art techniques",
+        "schedule": "Tuesdays, 3:30 PM - 4:30 PM",
+        "max_participants": 14,
+        "participants": ["charlotte@mergington.edu", "benjamin@mergington.edu"]
+        },
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
@@ -52,6 +89,7 @@ def get_activities():
     return activities
 
 
+
 @app.post("/activities/{activity_name}/signup")
 def signup_for_activity(activity_name: str, email: str):
     """Sign up a student for an activity"""
@@ -62,6 +100,27 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specific activity
     activity = activities[activity_name]
 
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
+
+    # Validate activity is not at max capacity
+    if len(activity["participants"]) >= activity["max_participants"]:
+        raise HTTPException(status_code=400, detail="Activity is at maximum capacity")
+
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+
+# Endpoint to unregister (delete) a participant from an activity
+@app.delete("/activities/{activity_name}/participants/{email}")
+def remove_participant(activity_name: str, email: str):
+    """Remove a participant from an activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    activity = activities[activity_name]
+    if email not in activity["participants"]:
+        raise HTTPException(status_code=404, detail="Participant not found in this activity")
+    activity["participants"].remove(email)
+    return {"message": f"Removed {email} from {activity_name}"}
